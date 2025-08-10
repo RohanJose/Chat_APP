@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { 
   cors: { 
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: ["https://chat-app-alpha-blue-30.vercel.app", "http://localhost:3000"],
     methods: ["GET", "POST"],
     credentials: true
   } 
@@ -16,7 +16,7 @@ const io = new Server(server, {
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  origin: ["https://chat-app-alpha-blue-30.vercel.app", "http://localhost:3000"],
   credentials: true
 }));
 app.use(express.json());
@@ -88,6 +88,15 @@ function cleanupRoom(roomId) {
 // Socket.IO connection handling
 io.on('connection', (socket) => {
   console.log(`[socket] Connected: ${socket.id}`);
+  console.log(`[socket] Origin: ${socket.handshake.headers.origin}`);
+  console.log(`[socket] User-Agent: ${socket.handshake.headers['user-agent']}`);
+  
+  // Send connection confirmation
+  socket.emit('connected', { 
+    message: 'Connected to chat server',
+    socketId: socket.id,
+    timestamp: new Date().toISOString()
+  });
 
   // Start match - user wants to find a chat partner
   socket.on('start_match', ({ mode = 'text', username = 'Anonymous' }) => {
@@ -422,6 +431,17 @@ app.get('/health', (req, res) => {
   };
   
   res.json(stats);
+});
+
+// Test endpoint for frontend connection
+app.get('/test', (req, res) => {
+  res.json({
+    message: 'Backend is working!',
+    frontend_url: 'https://chat-app-alpha-blue-30.vercel.app',
+    backend_url: 'https://chat-app-tlxx.onrender.com',
+    timestamp: new Date().toISOString(),
+    cors_origin: req.headers.origin
+  });
 });
 
 // Start server
