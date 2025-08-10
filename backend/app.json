@@ -1,0 +1,32 @@
+{
+  "name": "stranger-chat-backend",
+  "description": "Backend for Stranger Chat app",
+  "repository": "https://github.com/RohanJose/Chat_APP",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "express", "socket.io", "chat"],
+  "env": {
+    "NODE_ENV": {
+      "description": "Environment",
+      "value": "production"
+    },
+    "CORS_ORIGIN": {
+      "description": "Frontend URL for CORS",
+      "required": true
+    },
+    "MONGODB_URI": {
+      "description": "MongoDB connection string",
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
