@@ -1,0 +1,9 @@
+# Ignore frontend files for Railway backend deployment
+frontend/
+node_modules/
+.git/
+.gitignore
+README.md
+DEPLOYMENT.md
+deploy.sh
+setup.sh
